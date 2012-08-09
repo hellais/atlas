@@ -138,6 +138,9 @@ define([
                 relay.bandwidth = bw;
                 relay.family = relay.family ? relay.family : null;
                 relay.bandwidth_hr = hrBandwidth(bw);
+                relay.or_address = relay.or_addresses ? relay.or_addresses[0].split(":")[0] : null;
+                relay.or_port = relay.or_addresses ? relay.or_addresses[0].split(":")[1] : 0;
+                relay.dir_port = relay.dir_address ? relay.dir_address.split(":")[1] : 0;
                 relay.country = relay.country.toLowerCase();
                 relay.countryname = CountryCodes[relay.country];
                 relay.uptime = model.parsedate(relay.last_restarted);

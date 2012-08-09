@@ -64,7 +64,7 @@ Please report which browser/addons/etc. you're using to <a href="https://trac.to
             <img class="inline country" title="<%= relay.get('countryname') %>" src="img/cc/<%= relay.get('country') %>.png"/>
             <% } %>
             </td>
-			<td><%= relay.get('or_addresses') %></td>
+			<td><%= relay.get('or_address') %></td>
 			<td>
             <% _.each(relay.get('flags'), function(flag) { %>
             <img class="inline flags" rel="tooltip" src="img/flags/<%= flag[1] %>.png" title="<%= flag[0] %>"/>
