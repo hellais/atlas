@@ -57,6 +57,14 @@ define([
                                     },
                                 grid: { hoverable: true, clickable: true },
                                 xaxis: {mode: 'time', tickLength: 5},
+                                yaxis: {tickFormatter : function suffixFormatter(val, axis) {
+                                if (val > 1000000)
+                                   return (val / 1000000).toFixed(axis.tickDecimals) + "&nbsp;MB/s";
+                                else if (val > 1000)
+                                   return (val / 1000).toFixed(axis.tickDecimals) + "&nbsp;KB/s";
+                                else
+                                   return val.toFixed(axis.tickDecimals) + "&nbsp;B/s";
+                                }},
                         });
                         $("#"+g).resize();
 
