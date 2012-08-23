@@ -6,7 +6,8 @@ define([
   'backbone'
 ], function($, _, Backbone){
 
-    function parseHistory(history, model, relay) {
+    function parseHistory(history, model, relay, name) {
+        var newar;
         _.each(_.keys(history), function(period, i) {
             var first = history[period].first.split(' ');
             var date = first[0].split('-');
@@ -29,12 +30,11 @@ define([
                 // models.
                 // XXX probably want to refactor.
                 var mperiod = "bw_" + period.split("_")[1]
-                var newar = model.get(mperiod).write;
+                var newar = model.get(mperiod)[name];
                 newar.push([y,x]);
-                var toset = {mperiod: {write: newar}};
-                model.set(toset);
             });
         });
+        return newar;
     };
 
     function parseWeightHistory(history, model, name) {
@@ -100,8 +100,8 @@ define([
             var relay = data.relays[0];
             this.fingerprint = relay.fingerprint;
             // Parse the read and write history of the relay
-            var write_history = parseHistory(relay.write_history, model, relay);
-            var read_history = parseHistory(relay.read_history, model, relay);
+            var write_history = parseHistory(relay.write_history, model, relay, 'write');
+            var read_history = parseHistory(relay.read_history, model, relay, 'read');
             var toset = {mperiod: {read: read_history, write: write_history}};
             model.set(toset);
         },
