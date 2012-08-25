@@ -145,6 +145,8 @@ define([
                 relay.countryname = CountryCodes[relay.country];
                 relay.uptime = model.parsedate(relay.last_restarted);
                 relay.uptime_hr = relay.uptime.hr;
+                relay.as_no = relay.as_number;
+                relay.as_name = relay.as_name;
                 model.set({badexit: false});
                 //console.log(relay.uptime.hrfull);
                 relay.uptime_hrfull = relay.uptime.hrfull;
