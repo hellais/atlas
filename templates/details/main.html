@@ -33,15 +33,15 @@
       <dt><span class="tip" data-content="Port summary of exit connections that the relay is going to accept or reject." data-original-title="Exit policy summary">Exit Policy Summary</span></dt>
       <dd>
       <% if ('accept' in relay.get('exit_policy_summary')) { %>
-        <pre>accept<% _.each(relay.get('exit_policy_summary')['accept'],
+        <pre class="pre-scrollable">accept<% _.each(relay.get('exit_policy_summary')['accept'],
           function(ports) { %><br>  <%= $.trim(ports) %><% });} %></pre>
       <% if ('reject' in relay.get('exit_policy_summary')) { %>
-        <pre>reject<% _.each(relay.get('exit_policy_summary')['reject'],
+        <pre class="pre-scrollable">reject<% _.each(relay.get('exit_policy_summary')['reject'],
           function(ports) { %><br>  <%= $.trim(ports) %><% });} %></pre>
       </dd>
       <dt><span class="tip" data-content="Policy of exit connections that the relay is going to accept or reject." data-original-title="Exit policy">Exit Policy</span></dt>
       <dd>
-      <pre><% _.each(relay.get('exit_policy'), function(line) { %>
+      <pre class="pre-scrollable"><% _.each(relay.get('exit_policy'), function(line) { %>
 <%= $.trim(line) %><% }); %></pre>
       </dd>
     </dl>

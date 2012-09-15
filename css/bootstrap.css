@@ -492,6 +492,12 @@ pre {
 pre.prettyprint {
   margin-bottom: 18px;
 }
+
+pre.pre-scrollable {
+ max-height: 340px;
+ overflow-y: scroll;
+}
+
 pre code {
   padding: 0;
   background-color: transparent;
