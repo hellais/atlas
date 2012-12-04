@@ -144,14 +144,14 @@ define([
                     relay.dir_port = relay.dir_address ? relay.dir_address.split(":")[1] : 0;
                     relay.country = relay.country ? relay.country.toLowerCase() : null;
                     relay.countryname = relay.country ? CountryCodes[relay.country] : null;
-                    relay.uptime = model.parsedate(relay.last_restarted);
-                    relay.uptime_hr = relay.uptime.hr;
+                    relay.uptime = relay.last_restarted ? model.parsedate(relay.last_restarted) : null;
+                    relay.uptime_hr = relay.uptime ? relay.uptime.hr : null;
                     relay.as_no = relay.as_number;
                     relay.as_name = relay.as_name;
                     model.set({badexit: false});
                     //console.log(relay.uptime.hrfull);
-                    relay.uptime_hrfull = relay.uptime.hrfull;
-                    relay.uptime = relay.uptime.millisecs;
+                    relay.uptime_hrfull = relay.uptime ? relay.uptime.hrfull : null;
+                    relay.uptime = relay.uptime ? relay.uptime.millisecs : null;
                     var size = ['16x16', '14x16', '8x16'];
                     relay.flags = model.parseflags(relay.flags, size);
                     model.set(relay, options);
