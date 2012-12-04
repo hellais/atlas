@@ -132,29 +132,33 @@ define([
             var model = this;
             console.log("doing query..");
             $.getJSON(this.baseurl+'/details?lookup='+this.fingerprint, function(data) {
-                var relay = data.relays[0];
-                //console.log(data);
-                var bw = relay.advertised_bandwidth;
-                relay.bandwidth = bw;
-                relay.family = relay.family ? relay.family : null;
-                relay.bandwidth_hr = hrBandwidth(bw);
-                relay.or_address = relay.or_addresses ? relay.or_addresses[0].split(":")[0] : null;
-                relay.or_port = relay.or_addresses ? relay.or_addresses[0].split(":")[1] : 0;
-                relay.dir_port = relay.dir_address ? relay.dir_address.split(":")[1] : 0;
-                relay.country = relay.country ? relay.country.toLowerCase() : null;
-                relay.countryname = relay.country ? CountryCodes[relay.country] : null;
-                relay.uptime = model.parsedate(relay.last_restarted);
-                relay.uptime_hr = relay.uptime.hr;
-                relay.as_no = relay.as_number;
-                relay.as_name = relay.as_name;
-                model.set({badexit: false});
-                //console.log(relay.uptime.hrfull);
-                relay.uptime_hrfull = relay.uptime.hrfull;
-                relay.uptime = relay.uptime.millisecs;
-                var size = ['16x16', '14x16', '8x16'];
-                relay.flags = model.parseflags(relay.flags, size);
-                model.set(relay, options);
-                success(model, relay);
+                if (data.relays.length >= 1) {
+                    var relay = data.relays[0];
+                    //console.log(data);
+                    var bw = relay.advertised_bandwidth;
+                    relay.bandwidth = bw;
+                    relay.family = relay.family ? relay.family : null;
+                    relay.bandwidth_hr = hrBandwidth(bw);
+                    relay.or_address = relay.or_addresses ? relay.or_addresses[0].split(":")[0] : null;
+                    relay.or_port = relay.or_addresses ? relay.or_addresses[0].split(":")[1] : 0;
+                    relay.dir_port = relay.dir_address ? relay.dir_address.split(":")[1] : 0;
+                    relay.country = relay.country ? relay.country.toLowerCase() : null;
+                    relay.countryname = relay.country ? CountryCodes[relay.country] : null;
+                    relay.uptime = model.parsedate(relay.last_restarted);
+                    relay.uptime_hr = relay.uptime.hr;
+                    relay.as_no = relay.as_number;
+                    relay.as_name = relay.as_name;
+                    model.set({badexit: false});
+                    //console.log(relay.uptime.hrfull);
+                    relay.uptime_hrfull = relay.uptime.hrfull;
+                    relay.uptime = relay.uptime.millisecs;
+                    var size = ['16x16', '14x16', '8x16'];
+                    relay.flags = model.parseflags(relay.flags, size);
+                    model.set(relay, options);
+                    success(model, relay);
+                } else {
+                    error(model)
+                }
             }).error(function() {console.log("error...");error();});
         }
 

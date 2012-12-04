@@ -33,6 +33,11 @@ define([
     	        mainDetailsView.render();
                 $("#loading").hide();
 
+            },
+            error: function() {
+                $("#content").show();
+                mainDetailsView.error();
+                $("#loading").hide();
             }
         });
     },

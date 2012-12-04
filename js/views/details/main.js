@@ -180,6 +180,11 @@ define([
                 $(this).children(".tooltip").hide();
 
             });
+        },
+        error: function() {
+            var compiledTemplate = _.template(mainDetailsTemplate, {relay: null});
+            $("#loading").hide();
+            this.el.html(compiledTemplate);
         }
     });
     return new mainDetailsView;
