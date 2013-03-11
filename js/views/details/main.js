@@ -26,6 +26,7 @@ define([
             var data = {relay: this.model};
             //console.log(data);
             var compiledTemplate = _.template(mainDetailsTemplate, data);
+            document.title = "Atlas: " + this.model.get('nickname');
             this.el.html(compiledTemplate);
             var graph = this.graph;
             this.graph.lookup_bw(this.model.fingerprint, {

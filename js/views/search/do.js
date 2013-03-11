@@ -145,6 +145,7 @@ define([
 
         },
         render: function(query){
+            document.title = "Atlas";
             this.filtering();
             var asInitVals = new Array();
         	var compiledTemplate = _.template(doSearchTemplate, {relays: this.relays, countries: CountryCodes});

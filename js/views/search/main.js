@@ -13,6 +13,7 @@ define([
 	    },
 
 	    render: function(query){
+			document.title = "Atlas";
 			var data = {};
 			var compiledTemplate = _.template(mainSearchTemplate, data);
 			this.el.html(compiledTemplate);

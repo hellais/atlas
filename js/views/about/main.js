@@ -14,6 +14,7 @@ define([
         initialize: function() {
         },
         render: function() {
+            document.title = "Atlas";
             var data = {};
             var compiledTemplate = _.template(aboutTemplate, data);
             this.el.html(compiledTemplate);
