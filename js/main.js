@@ -14,8 +14,7 @@ require.config({
     typeahead: 'libs/bootstrap/bootstrap-typeahead',
     popover: 'libs/bootstrap/bootstrap-popover',
     collapse: 'libs/bootstrap/bootstrap-collapse',
-    flot: 'libs/flot/jquery.flot',
-    canvas2img: 'libs/flot/canvas2image',
+    d3js: 'libs/d3js/d3.v3.min',
     templates: '../templates'
   }
 

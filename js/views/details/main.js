@@ -9,8 +9,7 @@ define([
   'text!templates/details/main.html',
   'tooltip',
   'popover',
-  'flot',
-  'canvas2img',
+  'd3js',
   'collapse',
   'helpers'
 ], function($, _, Backbone, relayModel, graphModel, mainDetailsTemplate){
@@ -22,6 +21,143 @@ define([
            //console.log(this.graph);
            $("#loading").show();
         },
+        plot: function(g, data, labels, colors, tickFormat, tooltipFormat) {
+
+            /* Initialize graph. */
+            var margin = {top: 10, right: 10, bottom: 20, left: 60},
+                width = 550 - margin.left - margin.right,
+                height = 342 - margin.top - margin.bottom;
+            var svg = d3.select("#" + g).append("svg:svg")
+                .attr("id", g)
+                .attr("version", 1.1)
+                .attr("xmlns", "http://www.w3.org/2000/svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
+            svg.append("svg:title")
+                .text("Graph");
+
+            /* Define scales to convert domain values to pixels. */
+            var xExtents = d3.extent(d3.merge(data), function(d) {
+                return d[0]; });
+            var yExtents = d3.extent(d3.merge(data), function(d) {
+                return d[1]; });
+            var xScale = d3.time.scale()
+                .domain(xExtents)
+                .range([0, width]);
+            var yScale = d3.scale.linear()
+                .domain([0, yExtents[1]])
+                .range([height, 0]);
+
+            /* Add the x axis. */
+            var xAxis = d3.svg.axis()
+                .scale(xScale)
+                .ticks(4)
+                .orient("bottom");
+            var xAxisContainer = svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0, " + height + ")")
+                .call(xAxis);
+            xAxisContainer.selectAll("line")
+                .style("stroke", "lightgrey");
+            xAxisContainer.selectAll("path")
+                .style("display", "none");
+            xAxisContainer.selectAll("minor")
+                .style("stroke-opacity", .5);
+            xAxisContainer.selectAll("text")
+                .style("font-family", "Helvetica")
+                .style("font-size", "12px");
+
+            /* Add the y axis. */
+            var yAxis = d3.svg.axis()
+                .scale(yScale)
+                .orient("left")
+                .ticks(4)
+                .tickFormat(d3.format(tickFormat));
+            var yAxisContainer = svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis);
+            yAxisContainer.selectAll("line")
+                .style("stroke", "lightgrey");
+            yAxisContainer.selectAll("path")
+                .style("display", "none");
+            yAxisContainer.selectAll("minor")
+                .style("stroke-opacity", .5);
+            yAxisContainer.selectAll("text")
+                .style("font-family", "Helvetica")
+                .style("font-size", "12px");
+
+            /* Add one group per data line. */
+            var lineContainers = svg.selectAll("g.line")
+                .data(data)
+                .enter().append("svg:g")
+                .attr("class", "line")
+                .style("stroke-width", 2)
+                .style("stroke", function(d) {
+                    return colors[data.indexOf(d)]; });
+
+            /* Add path between all line values. */
+            var line = d3.svg.line()
+                .defined(function(d) { return d[1] != null; })
+                .x(function (d) { return xScale(d[0]); })
+                .y(function (d) { return yScale(d[1]); });
+            lineContainers.append("svg:path")
+                .attr("d", line)
+                .style("fill", "none");
+
+            /* Add dots for all line values, and add tooltips. */
+            var tooltipFormatter = d3.format(tooltipFormat);
+            lineContainers.selectAll("circle")
+                .data(function(d) { return d; })
+                .enter().append("svg:circle")
+                .attr("class", "dot")
+                .attr("cx", function(d) { return xScale(d[0]); })
+                .attr("cy", function(d) { return yScale(d[1]); })
+                .attr("r", 3)
+                .style("fill", "white")
+                .append("svg:title")
+                .text(function(d) { return tooltipFormatter(d[1]) });
+
+            /* Add a legend. */
+            var legend = svg.append("g")
+                .attr("class", "legend")
+                .attr("x", width - 65)
+                .attr("y", 25);
+            legend.selectAll("g").data(data)
+                .enter().append("g")
+                .each(function(d, i) {
+                    var g = d3.select(this);
+                    g.append("svg:circle")
+                        .attr("cx", width)
+                        .attr("cy", i * 15 + 4)
+                        .attr("r", 3)
+                        .style("stroke-width", 2)
+                        .style("stroke", colors[i])
+                        .style("fill", "white");
+                    g.append("svg:text")
+                        .attr("x", width - 10)
+                        .attr("y", i * 15 + 8)
+                        .attr("height", 30)
+                        .attr("width", 100)
+                        .attr("text-anchor", "end")
+                        .style("fill", colors[i])
+                        .style("font-family", "Helvetica")
+                        .style("font-size", "12px")
+                        .text(labels[i]);
+                });
+
+            /* Remove placeholder image. */
+            d3.select("#" + g).selectAll("img").remove();
+
+            /* Encode SVG image for download link. */
+            html = d3.select("#" + g)
+                .node()
+                .innerHTML;
+            d3.select("#save_" + g)
+                .attr("href", "data:image/svg+xml;base64,\n" + btoa(html));
+        },
         render: function() {
             var data = {relay: this.model};
             //console.log(data);
@@ -29,143 +165,36 @@ define([
             document.title = "Atlas: " + this.model.get('nickname');
             this.el.html(compiledTemplate);
             var graph = this.graph;
+            var plot = this.plot;
             this.graph.lookup_bw(this.model.fingerprint, {
                 success: function() {
                     graph.parse_bw_data(graph.data);
-                    //console.log(graph.get('bw_days').write);
-                    function showTooltip(x, y, contents) {
-                        $('<div id="graphtooltip">' + contents + '</div>').css( {
-                            position: 'absolute',
-                            display: 'none',
-                            top: y - 25,
-                            left: x + 5,
-                            border: '1px solid #fdd',
-                            padding: '2px',
-                            'background-color': '#fee',
-                            opacity: 0.80
-                        }).appendTo("body").fadeIn(200);
-                    }
                     graphs = ['bw_days', 'bw_week', 'bw_month',
                             'bw_months', 'bw_year', 'bw_years'];
                     _.each(graphs, function(g) {
-                        var plot_data = [{data: graph.get(g).write, label: 'write'},
-                                         {data: graph.get(g).read, label: 'read'}];
-                        $.plot($("#"+g),
-                            plot_data, {
-                                series: {
-                                    lines: {show: true},
-                                    points: {show: true},
-                                    },
-                                grid: { hoverable: true, clickable: true },
-                                xaxis: {mode: 'time', tickLength: 5},
-                                yaxis: {tickFormatter : function suffixFormatter(val, axis) {
-                                if (val > 1000000)
-                                   return (val / 1000000).toFixed(2) + "&nbsp;MB/s";
-                                else if (val > 1000)
-                                   return (val / 1000).toFixed(2) + "&nbsp;KB/s";
-                                else
-                                   return val.toFixed(2) + "&nbsp;B/s";
-                                }},
-                        });
-                        $("#"+g).resize();
-
-
-                        $("#save_"+g).attr('href', Canvas2Image.saveAsPNG($("#"+g+" > canvas.base")[0], false));
-
-                        var previousItem = null;
-                        $("#"+g).bind("plothover", function (event, pos, item){
-                            if (item) {
-                                if (previousItem != item.dataIndex) {
-                                    previousItem = item.dataIndex;
-
-                                    $("#graphtooltip").remove();
-                                    var x = item.datapoint[0].toFixed(2),
-                                        y = item.datapoint[1].toFixed(2);
-                                    var bw = hrBandwidth(item.datapoint[1]);
-                                    showTooltip(item.pageX, item.pageY,
-                                                bw);
-
-                                }
-                            } else {
-                                $("#graphtooltip").remove();
-                                previousItem = null;
-                            }
-                        });
+                        var data = [graph.get(g).write, graph.get(g).read];
+                        var labels = ["written bytes per second", "read bytes per second"];
+                        var colors = ["#edc240", "#afd8f8"];
+                        plot(g, data, labels, colors, "s", ".4s");
                     });
                 }
-            });
-
-            $("#loading").hide();
-            $(".flag .tooltip").hide();
-            $(".tip").popover();
-            $(".flag").hover(function(){
-                $(this).children(".tooltip").show();
-
-            }, function(e){
-
-                $(this).children(".tooltip").hide();
-
             });
 
             this.graph.lookup_weights(this.model.fingerprint, {
                 success: function() {
                     graph.parse_weights_data(graph.data);
-                    //console.log(graph.get('weights_week').write);
-                    function showTooltip(x, y, contents) {
-                        $('<div id="graphtooltip">' + contents + '</div>').css( {
-                            position: 'absolute',
-                            display: 'none',
-                            top: y - 25,
-                            left: x + 5,
-                            border: '1px solid #fdd',
-                            padding: '2px',
-                            'background-color': '#fee',
-                            opacity: 0.80
-                        }).appendTo("body").fadeIn(200);
-                    }
                     graphs = ['weights_week', 'weights_month',
                             'weights_months', 'weights_year', 'weights_years'];
                     _.each(graphs, function(g) {
-                        var plot_data = [{data: graph.get(g).advbw, label: 'advertised bandwidth fraction'},
-                                         {data: graph.get(g).cw, label: 'consensus weight fraction'},
-                                         {data: graph.get(g).guard, label: 'guard probability'},
-                                         {data: graph.get(g).exit, label: 'exit probability'}];
-                        $.plot($("#"+g),
-                            plot_data, {
-                                series: {
-                                    lines: {show: true},
-                                    points: {show: true},
-                                    },
-                                grid: { hoverable: true, clickable: true },
-                                xaxis: {mode: 'time', tickLength: 5},
-                                yaxis: {tickFormatter : function suffixFormatter(val, axis) {
-                                   return (val * 100).toFixed(axis.tickDecimals) + "&nbsp;%";
-                                }},
-                        });
-                        $("#"+g).resize();
-
-
-                        $("#save_"+g).attr('href', Canvas2Image.saveAsPNG($("#"+g+" > canvas.base")[0], false));
-
-                        var previousItem = null;
-                        $("#"+g).bind("plothover", function (event, pos, item){
-                            if (item) {
-                                if (previousItem != item.dataIndex) {
-                                    previousItem = item.dataIndex;
-
-                                    $("#graphtooltip").remove();
-                                    var x = item.datapoint[0].toFixed(2),
-                                        y = item.datapoint[1].toFixed(2);
-                                    var weight = (100 * item.datapoint[1]).toFixed(3) + "&nbsp;%";
-                                    showTooltip(item.pageX, item.pageY,
-                                                weight);
-
-                                }
-                            } else {
-                                $("#graphtooltip").remove();
-                                previousItem = null;
-                            }
-                        });
+                        var data = [graph.get(g).advbw, graph.get(g).cw,
+                                    graph.get(g).guard, graph.get(g).exit];
+                        var labels = ["advertised bandwidth fraction",
+                                      "consensus weight fraction",
+                                      "guard probability",
+                                      "exit probability"];
+                        var colors = ["#edc240", "#afd8f8",
+                                      "#cb4b4b", "#4da74d"];
+                        plot(g, data, labels, colors, ".4%", ".6%");
                     });
                 }
             });
