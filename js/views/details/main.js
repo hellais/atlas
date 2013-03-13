@@ -21,10 +21,11 @@ define([
            //console.log(this.graph);
            $("#loading").show();
         },
-        plot: function(g, data, labels, colors, tickFormat, tooltipFormat) {
+        plot: function(g, data, labels, legendPos, colors, tickFormat,
+                       tooltipFormat) {
 
             /* Initialize graph. */
-            var margin = {top: 10, right: 10, bottom: 20, left: 60},
+            var margin = {top: 30, right: 10, bottom: 20, left: 60},
                 width = 550 - margin.left - margin.right,
                 height = 342 - margin.top - margin.bottom;
             var svg = d3.select("#" + g).append("svg:svg")
@@ -144,18 +145,17 @@ define([
                 .each(function(d, i) {
                     var g = d3.select(this);
                     g.append("svg:circle")
-                        .attr("cx", width)
-                        .attr("cy", i * 15 + 4)
+                        .attr("cx", legendPos[i][0] - margin.left + 5)
+                        .attr("cy", legendPos[i][1] - margin.top + 10)
                         .attr("r", 3)
                         .style("stroke-width", 2)
                         .style("stroke", colors[i])
                         .style("fill", "white");
                     g.append("svg:text")
-                        .attr("x", width - 10)
-                        .attr("y", i * 15 + 8)
+                        .attr("x", legendPos[i][0] - margin.left + 15)
+                        .attr("y", legendPos[i][1] - margin.top + 14)
                         .attr("height", 30)
                         .attr("width", 100)
-                        .attr("text-anchor", "end")
                         .style("fill", colors[i])
                         .style("font-family", "Helvetica")
                         .style("font-size", "12px")
@@ -188,8 +188,9 @@ define([
                     _.each(graphs, function(g) {
                         var data = [graph.get(g).write, graph.get(g).read];
                         var labels = ["written bytes per second", "read bytes per second"];
+                        var legendPos = [[140, 0], [310, 0]];
                         var colors = ["#edc240", "#afd8f8"];
-                        plot(g, data, labels, colors, "s", ".4s");
+                        plot(g, data, labels, legendPos, colors, "s", ".4s");
                     });
                 }
             });
@@ -206,9 +207,10 @@ define([
                                       "consensus weight fraction",
                                       "guard probability",
                                       "exit probability"];
+                        var legendPos = [[3, 0], [181, 0], [341, 0], [450, 0]];
                         var colors = ["#edc240", "#afd8f8",
                                       "#cb4b4b", "#4da74d"];
-                        plot(g, data, labels, colors, ".4%", ".6%");
+                        plot(g, data, labels, legendPos, colors, ".4%", ".6%");
                     });
                 }
             });
