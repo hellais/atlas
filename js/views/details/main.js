@@ -108,18 +108,33 @@ define([
                 .attr("d", line)
                 .style("fill", "none");
 
+            var datetimeFormat = function(seconds) {
+              var date = new Date(seconds);
+              return d3.time.format("%H:%M %Y-%m-%e")(date);
+            }
+
+            var tooltip = d3.select("body").append("div")
+                          .attr("class", "tooltip")
+                          .style("opacity", 0);
+
             /* Add dots for all line values, and add tooltips. */
             var tooltipFormatter = d3.format(tooltipFormat);
             lineContainers.selectAll("circle")
                 .data(function(d) { return d; })
-                .enter().append("svg:circle")
+                .enter()
+                .append("svg:circle")
                 .attr("class", "dot")
                 .attr("cx", function(d) { return xScale(d[0]); })
                 .attr("cy", function(d) { return yScale(d[1]); })
                 .attr("r", 3)
-                .style("fill", "white")
-                .append("svg:title")
-                .text(function(d) { return tooltipFormatter(d[1]) });
+                .style("fill", "white");
+
+            $("svg circle").tooltip({
+              title: function() {
+                var d = this.__data__;
+                return datetimeFormat(d[0]) + ": " + tooltipFormatter(d[1]);
+              }
+            });
 
             /* Add a legend. */
             var legend = svg.append("g")
