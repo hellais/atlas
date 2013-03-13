@@ -75,6 +75,7 @@ define([
                 .scale(yScale)
                 .orient("left")
                 .ticks(4)
+                .tickSize(-width - 4)
                 .tickFormat(d3.format(tickFormat));
             var yAxisContainer = svg.append("g")
                 .attr("class", "y axis")
