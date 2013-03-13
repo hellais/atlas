@@ -36,8 +36,6 @@ define([
                 .append("g")
                 .attr("transform",
                     "translate(" + margin.left + "," + margin.top + ")");
-            svg.append("svg:title")
-                .text("Graph");
 
             /* Define scales to convert domain values to pixels. */
             var xExtents = d3.extent(d3.merge(data), function(d) {
@@ -110,7 +108,7 @@ define([
 
             var datetimeFormat = function(seconds) {
               var date = new Date(seconds);
-              return d3.time.format("%H:%M %Y-%m-%e")(date);
+              return d3.time.format("%Y-%m-%d %H:%M")(date);
             }
 
             var tooltip = d3.select("body").append("div")
