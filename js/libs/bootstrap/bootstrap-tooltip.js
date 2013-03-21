@@ -129,13 +129,21 @@
 
         actualWidth = $tip[0].offsetWidth
         actualHeight = $tip[0].offsetHeight
-
+        // XXX this is a fix to a bug inside of firefox where the offsetWidth
+        // is not set on svg circle elements.
+        var left_fix;
+        if (pos.width) {
+          left_fix = pos.left + pos.width / 2 - actualWidth / 2;
+        }
+        else {
+          left_fix = pos.left - actualWidth / 2;
+        }
         switch (inside ? placement.split(' ')[1] : placement) {
           case 'bottom':
-            tp = {top: pos.top + pos.height, left: pos.left + pos.width / 2 - actualWidth / 2}
+            tp = {top: pos.top + pos.height, left: left_fix};
             break
           case 'top':
-            tp = {top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2}
+            tp = {top: pos.top - actualHeight, left: left_fix};
             break
           case 'left':
             tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth}
