@@ -87,7 +87,7 @@
     <dt><span class="tip" data-content="Date and time when the relay last published a descriptor to the directory authorities." data-original-title="Descriptor published">Descriptor Published</span></dt>
     <dd><%= relay.get('desc_published') %></dd>
 
-    <dt><span class="tip" data-content="XXX" data-original-title="YYY">Platform</span></dt>
+    <dt><span class="tip" data-content="What OS and Tor version the relay is using" data-original-title="Platform">Platform</span></dt>
     <dd><%= _.escape(relay.get('platform')) %></dd>
 
     </dl>
@@ -98,7 +98,7 @@
     <dt><span class="tip" data-content="Time since when this relay is online." data-original-title="Uptime">Uptime</span></dt>
     <dd><%= relay.get('uptime_hrfull') %></dd>
 
-    <dt><span class="tip" data-content="Whether this relay is listed in the current Tor directory or not." data-original-title="YYY">Running</span></dt>
+    <dt><span class="tip" data-content="Whether this relay is listed in the current Tor directory or not." data-original-title="Running">Running</span></dt>
     <dd><%= relay.get('running') %></dd>
 
     </div>
