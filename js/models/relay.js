@@ -135,6 +135,7 @@ define([
                 if (data.relays.length >= 1) {
                     var relay = data.relays[0];
                     //console.log(data);
+                    relay.contact = relay.contact ? relay.contact : 'undefined';
                     relay.bandwidth = relay.advertised_bandwidth ? relay.advertised_bandwidth : null;
                     relay.bandwidth_hr = relay.advertised_bandwidth ? hrBandwidth(relay.advertised_bandwidth) : null;
                     relay.family = relay.family ? relay.family : null;
