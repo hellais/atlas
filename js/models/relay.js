@@ -136,6 +136,11 @@ define([
                     var relay = data.relays[0];
                     //console.log(data);
                     relay.contact = relay.contact ? relay.contact : 'undefined';
+                    relay.platform = relay.platform ? relay.platform : null;
+                    relay.nickname = relay.nickname ? relay.nickname : "Unnamed";
+                    relay.dir_address = relay.dir_address ? relay.dir_address : null;
+                    relay.exit_policy = relay.exit_policy ? relay.exit_policy : null;
+                    relay.exit_policy_summary = relay.exit_policy_summary ?  relay.exit_policy_summary : null;
                     relay.bandwidth = relay.advertised_bandwidth ? relay.advertised_bandwidth : null;
                     relay.bandwidth_hr = relay.advertised_bandwidth ? hrBandwidth(relay.advertised_bandwidth) : null;
                     relay.family = relay.family ? relay.family : null;
@@ -149,6 +154,7 @@ define([
                     relay.uptime_hrfull = relay.last_restarted ? relay.uptime.hrfull : null;
                     //console.log(relay.uptime.hrfull);
                     relay.uptime = relay.last_restarted ? relay.uptime.millisecs : null;
+                    relay.last_restarted = relay.last_restarted ? relay.last_restarted : null;
                     relay.as_no = relay.as_number ? relay.as_number : null;
                     relay.as_name = relay.as_name ? relay.as_name : null;
                     model.set({badexit: false});
