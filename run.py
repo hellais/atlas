@@ -101,5 +101,4 @@ rest_api = [(r"/(.*)", LongStatic, {"path": "./"})]
 if __name__ == "__main__":
     application = web.Application(rest_api)
     application.listen(8888)
-    print "Running on http://192.168.178.31:8888/index.html"
     ioloop.IOLoop.instance().start()
