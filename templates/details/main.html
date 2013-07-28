@@ -90,6 +90,9 @@
     <dt><span class="tip" data-content="What OS and Tor version the relay is using" data-original-title="Platform">Platform</span></dt>
     <dd><%= _.escape(relay.get('platform')) %></dd>
 
+    <dt><span class="tip" data-content="Weight assigned to this relay by the directory authorities that clients use in their path selection algorithm. The unit is arbitrary; currently it's kilobytes per second, but that might change in the future." data-original-title="Consensus Weight">Consensus Weight</span></dt>
+    <dd><%= relay.get('consensus_weight') %></dd>
+
     </dl>
     </div>
     <div class="span4">
