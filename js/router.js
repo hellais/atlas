@@ -10,7 +10,7 @@ define([
 ], function($, _, Backbone, mainDetailsView, mainSearchView, doSearchView, aboutView){
   var AppRouter = Backbone.Router.extend({
     routes: {
-    	// Define the routes for the actions in Tor Status
+       // Define the routes for the actions in Atlas
     	'details/:fingerprint': 'mainDetails',
     	'search/:query': 'doSearch',
     	'about': 'showAbout',
@@ -42,7 +42,7 @@ define([
         });
     },
 
-    // Perform a search on Tor Status
+    // Perform a search on Atlas
     doSearch: function(query){
         $("#home").removeClass("active");
         $("#about").removeClass("active");
@@ -71,7 +71,7 @@ define([
             });
         }
     },
-    // Display the Tor Status about page
+    // Display the Atlas about page
     showAbout: function(){
         $("#home").removeClass("active");
         $("#about").addClass("active");
