@@ -1,8 +1,8 @@
 Atlas
 =====
 
-Atlas is a web application to discover Tor relays and bridges. It provides useful
-information on how relays are configured along with graphics about their past.
+Atlas is a web application to discover Tor relays. It provides useful
+information on how relays are configured along with diagrams about their past.
 
 
 Running it
