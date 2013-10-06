@@ -76,7 +76,7 @@
     </dd>
 
     <dt><span class="tip" data-content="Country as found in a GeoIP database by resolving the relay's first onion-routing address." data-original-title="Country">Country</span></dt>
-    <dd><%= relay.get('country') %></dd>
+    <dd><img class="inline country" title="<%= relay.get('countryname') %>" src="img/cc/<%= relay.get('country') %>.png"/> <%= relay.get('countryname') %></dd>
 
     <dt><span class="tip" data-content="Autonomous System Number" data-original-title="AS Number">AS Number</span></dt>
     <dd><%= _.escape(relay.get('as_no')) %></dd>
