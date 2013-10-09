@@ -55,8 +55,15 @@
 
     </div>
     <div class="span4">
+    <% if (relay.get('running') === true) { %>
     <h3>Properties</h3>
     <dl>
+    <% } else { %>
+    <h3>Last Known Properties</h3>
+    <dl>
+    <dt><span class="tip" data-content="Timestamp when the relay was last seen in the consensus." data-original-title="Last seen">Last Seen</span></dt>
+    <dd><%= relay.get('last_seen') %></dd>
+    <% } %>
 
     <dt><span class="tip" data-content="20-byte unique identifier of the relay." data-original-title="Fingerprint">Fingerprint</span></dt>
     <dd><%= relay.get('fingerprint') %></dd>
