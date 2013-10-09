@@ -98,8 +98,13 @@
     <div class="span4">
     <h3>Status</h3>
 
-    <dt><span class="tip" data-content="Time since when this relay is online." data-original-title="Uptime">Uptime</span></dt>
+    <% if (relay.get('running') === false) { %>
+    <dt><span class="tip" data-content="The time since this relay was last seen online." data-original-title="Downtime">Downtime</span></dt>
+    <dd><%= relay.get('downtime') %></dd>
+    <% } else {%>
+    <dt><span class="tip" data-content="The time since this relay is online." data-original-title="Uptime">Uptime</span></dt>
     <dd><%= relay.get('uptime_hrfull') %></dd>
+    <% } %>
 
     <dt><span class="tip" data-content="Whether this relay is listed in the current Tor directory or not." data-original-title="Running">Running</span></dt>
     <dd><%= relay.get('running') %></dd>
