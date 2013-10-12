@@ -104,6 +104,7 @@
     </div>
     <div class="span4">
     <h3>Current Status</h3>
+    <dl>
 
     <% if (relay.get('running') === false) { %>
     <dt><span class="tip" data-content="The time since this relay was last seen online." data-original-title="Downtime">Downtime</span></dt>
@@ -116,6 +117,7 @@
     <dt><span class="tip" data-content="Whether this relay is listed in the current Tor directory or not." data-original-title="Running">Running</span></dt>
     <dd><%= relay.get('running') %></dd>
 
+    </dl>
     </div>
 </div>
 
