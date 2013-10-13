@@ -26,7 +26,7 @@ define([
                 if (flag == "Guard") {
                     output.push([flag,"share_"+size[0]]);
                 }
-                if (flag == "HSir") {
+                if (flag == "HSDir") {
                     output.push([flag,"book_alt_"+size[0]]);
                 }
                 if (flag == "Named") {
