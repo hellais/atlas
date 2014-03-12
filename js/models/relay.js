@@ -141,6 +141,9 @@ define([
                     relay.dir_address = relay.dir_address ? relay.dir_address : null;
                     relay.exit_policy = relay.exit_policy ? relay.exit_policy : null;
                     relay.exit_policy_summary = relay.exit_policy_summary ?  relay.exit_policy_summary : null;
+                    relay.bandwidthr = relay.bandwidth_rate ? hrBandwidth(relay.bandwidth_rate) : null;
+                    relay.bandwidthb = relay.bandwidth_burst ? hrBandwidth(relay.bandwidth_burst) : null;
+                    relay.obandwidth = relay.observed_bandwidth ? hrBandwidth(relay.observed_bandwidth) : null;
                     relay.bandwidth = relay.advertised_bandwidth ? relay.advertised_bandwidth : null;
                     relay.bandwidth_hr = relay.advertised_bandwidth ? hrBandwidth(relay.advertised_bandwidth) : null;
                     relay.family = relay.family ? relay.family : null;

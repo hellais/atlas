@@ -35,7 +35,7 @@
       <dt>
       <span class="tip" data-content="Bandwidth that the relay is willing and able to provide in bytes per second." data-original-title="Advertised bandwidth">Advertised Bandwidth</span>
       </dt>
-      <dd><%= relay.get('bandwidth_hr') %></dd>
+      <dd><span class="tip" data-content="Bandwidth rate: <%= relay.get('bandwidthr') %><br>Bandwidth burst: <%= relay.get('bandwidthb') %><br>Observed bandwidth: <%= relay.get('obandwidth') %>" data-original-title="Bandwidth values"><%= relay.get('bandwidth_hr') %></span></dd>
       <dt><span class="tip" data-content="Port summary of exit connections that the relay is going to accept or reject." data-original-title="Exit policy summary">Exit Policy Summary</span></dt>
       <dd>
       <% if ('accept' in relay.get('exit_policy_summary')) { %>
