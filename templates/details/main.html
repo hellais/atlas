@@ -36,13 +36,22 @@
       <span class="tip" data-content="Bandwidth that the relay is willing and able to provide in bytes per second." data-original-title="Advertised bandwidth">Advertised Bandwidth</span>
       </dt>
       <dd><span class="tip" data-content="Bandwidth rate: <%= relay.get('bandwidthr') %><br>Bandwidth burst: <%= relay.get('bandwidthb') %><br>Observed bandwidth: <%= relay.get('obandwidth') %>" data-original-title="Bandwidth values"><%= relay.get('bandwidth_hr') %></span></dd>
-      <dt><span class="tip" data-content="Port summary of exit connections that the relay is going to accept or reject." data-original-title="Exit policy summary">Exit Policy Summary</span></dt>
+      <dt><span class="tip" data-content="Port summary of IPv4 exit connections that the relay is going to accept or reject." data-original-title="IPv4 exit policy summary">IPv4 Exit Policy Summary</span></dt>
       <dd>
       <% if ('accept' in relay.get('exit_policy_summary')) { %>
         <pre class="pre-scrollable">accept<% _.each(relay.get('exit_policy_summary')['accept'],
           function(ports) { %><br>  <%= $.trim(ports) %><% });} %></pre>
       <% if ('reject' in relay.get('exit_policy_summary')) { %>
         <pre class="pre-scrollable">reject<% _.each(relay.get('exit_policy_summary')['reject'],
+          function(ports) { %><br>  <%= $.trim(ports) %><% });} %></pre>
+      </dd>
+      <dt><span class="tip" data-content="Port summary of IPv6 exit connections that the relay is going to accept or reject." data-original-title="IPv6 exit policy summary">IPv6 Exit Policy Summary</span></dt>
+      <dd>
+      <% if (relay.get('exit_policy_v6_summary') && ('accept' in relay.get('exit_policy_v6_summary'))) { %>
+        <pre class="pre-scrollable">accept<% _.each(relay.get('exit_policy_v6_summary')['accept'],
+          function(ports) { %><br>  <%= $.trim(ports) %><% });} %></pre>
+      <% if (relay.get('exit_policy_v6_summary') && ('reject' in relay.get('exit_policy_v6_summary'))) { %>
+        <pre class="pre-scrollable">reject<% _.each(relay.get('exit_policy_v6_summary')['reject'],
           function(ports) { %><br>  <%= $.trim(ports) %><% });} %></pre>
       </dd>
       <dt><span class="tip" data-content="Policy of exit connections that the relay is going to accept or reject." data-original-title="Exit policy">Exit Policy</span></dt>

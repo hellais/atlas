@@ -494,7 +494,7 @@ pre.prettyprint {
 }
 
 pre.pre-scrollable {
- max-height: 340px;
+ max-height: 140px;
  overflow-y: scroll;
 }
 
