@@ -1,9 +1,3 @@
-<% if(relay == null) {%>
-    <div class="alert">
-        <strong>No Results found!</strong><p>
-    No Tor relays matched your query :(</p>
-    </div>
-<% } else { %>
 <h1>Details for: <span id="relay_name"><%= relay.get('nickname') %></span></h1>
 <!-- div class="subnav">
     <ul class="nav nav-pills">
@@ -318,6 +312,3 @@
 <hr/>
 </div>
 -->
-<% } %>
-
-

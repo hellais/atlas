@@ -6,13 +6,16 @@ define([
   'backbone',
   'models/relay',
   'models/graph',
-  'text!templates/details/main.html',
+  'text!templates/details/router.html',
+  'text!templates/details/bridge.html',
+  'text!templates/details/error.html',
   'tooltip',
   'popover',
   'd3js',
   'collapse',
   'helpers'
-], function($, _, Backbone, relayModel, graphModel, mainDetailsTemplate){
+], function($, _, Backbone, relayModel, graphModel,
+        routerDetailsTemplate, bridgeDetailsTemplate, errorDetailsTemplate){
     var mainDetailsView = Backbone.View.extend({
         el: $("#content"),
         initialize: function() {
@@ -175,7 +178,13 @@ define([
         render: function() {
             var data = {relay: this.model};
             //console.log(data);
-            var compiledTemplate = _.template(mainDetailsTemplate, data);
+            var compiledTemplate;
+            if (!this.model)
+                compiledTemplate = _.template(errorDetailsTemplate, data);
+            else if (this.model.get('is_bridge'))
+                compiledTemplate = _.template(bridgeDetailsTemplate, data);
+            else
+                compiledTemplate = _.template(routerDetailsTemplate, data);
             document.title = "Atlas: " + this.model.get('nickname');
             this.el.html(compiledTemplate);
             var graph = this.graph;
@@ -230,7 +239,7 @@ define([
             });
         },
         error: function() {
-            var compiledTemplate = _.template(mainDetailsTemplate, {relay: null});
+            var compiledTemplate = _.template(errorDetailsTemplate, {relay: null});
             $("#loading").hide();
             this.el.html(compiledTemplate);
         }

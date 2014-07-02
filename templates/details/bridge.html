@@ -1,0 +1,184 @@
+<h1>Details for: <span id="relay_name"><%= relay.get('nickname') %></span></h1>
+<!-- div class="subnav">
+    <ul class="nav nav-pills">
+        <li><a href="#general">General</a></li>
+        <li><a href="#graphs">Graphs</a></li>
+        <li><a href="#misc">Misc</a></li>
+    </ul>
+</div-->
+
+<h2>General <small>Overall information on the Tor bridge</small></h2>
+<hr/>
+
+<div class="row">
+    <div class="span4">
+    <h3>Configuration</h3>
+    <dl>
+      <dt><span class="tip" data-content="This is the nickname that the Tor bridge operator chose." data-original-title="Nickname">Nickname</span></dt>
+      <dd><%= _.escape(relay.get('nickname')) %></dd>
+
+      <dt><span class="tip" data-content="Ports (addresses are hidden) where the bridge listens for incoming connections from clients and other relays." data-original-title="Onion-routing addresses">OR Addresses</span></dt>
+      <dd><%= relay.get('or_addresses') %></dd>
+
+      <dt>
+      <span class="tip" data-content="Bandwidth that the bridge is willing and able to provide in bytes per second." data-original-title="Advertised bandwidth">Advertised Bandwidth</span>
+      </dt>
+      <dd><%= relay.get('bandwidth_hr') %></dd>
+    </dl>
+
+
+    </div>
+    <div class="span4">
+    <% if (relay.get('running') === true) { %>
+    <h3>Properties</h3>
+    <dl>
+    <% } else { %>
+    <h3>Last Known Properties</h3>
+    <dl>
+    <dt><span class="tip" data-content="Timestamp when the bridge was last seen in the consensus." data-original-title="Last seen">Last Seen</span></dt>
+    <dd><%= relay.get('last_seen') %></dd>
+    <% } %>
+
+    <dt><span class="tip" data-content="Hash of 20-byte unique identifier of the bridge." data-original-title="Hashed Fingerprint">Hashed Fingerprint</span></dt>
+    <dd><%= relay.get('fingerprint') %></dd>
+
+    <dt><span class="tip" data-content="Flags that the directory authorities assigned to this bridge." data-original-title="Bridge flags">Flags</span></dt>
+    <dd><% _.each(relay.get('flags'), function(flag) { %>
+        <img class="inline" src="img/flags/<%= flag[1] %>.png">
+        <span class="inline"><%= flag[0] %></span>
+    <% }); %>
+    </dd>
+
+    <dt><span class="tip" data-content="Date and time when the bridge was last (re-)started." data-original-title="Last restarted">Last Restarted</span></dt>
+    <dd><%= relay.get('last_restarted') %></dd>
+
+    <dt><span class="tip" data-content="What OS and Tor version the bridge is using" data-original-title="Platform">Platform</span></dt>
+    <dd><%= _.escape(relay.get('platform')) %></dd>
+
+    <dt><span class="tip" data-content="BridgeDB information assigned to the bridge." data-original-title="Pool Assignment">Pool Assignment</span></dt>
+    <dd><%= relay.get('pool_assignment') %></dd>
+
+    </dl>
+    </div>
+    <div class="span4">
+    <h3>Current Status</h3>
+    <dl>
+
+    <% if (relay.get('running') === false) { %>
+    <dt><span class="tip" data-content="The time since this bridge  was last seen online." data-original-title="Downtime">Downtime</span></dt>
+    <dd><%= relay.get('downtime') %></dd>
+    <% } else {%>
+    <dt><span class="tip" data-content="The time since this bridge is online." data-original-title="Uptime">Uptime</span></dt>
+    <dd><%= relay.get('uptime_hrfull') %></dd>
+    <% } %>
+
+    <dt><span class="tip" data-content="Whether this bridge is listed in the current Tor directory or not." data-original-title="Running">Running</span></dt>
+    <dd><%= relay.get('running') %></dd>
+
+    </dl>
+    </div>
+</div>
+
+<div class="row">
+<h2>Graphs <small>Pretty graphs</small></h2>
+<hr/>
+    <ul class="thumbnails">
+        <li class="span8">
+          <div class="thumbnail">
+            <div id="bw_days" class="graph">
+            <img src="img/no-data-available.png" alt="">
+            </div>
+            <div class="caption">
+              <h5>3 Days graph</h5>
+              <a id="save_bw_days" href="">Save Graph</a>
+            </div>
+          </div>
+          </li>
+    </ul>
+</div><div class="row">
+        <ul class="thumbnails">
+        <li class="span8">
+          <div class="thumbnail">
+
+            <div id="bw_week" class="graph">
+            <img src="img/no-data-available.png" alt="">
+            </div>
+            <div class="caption">
+              <h5>1 Week graph</h5>
+              <a id="save_bw_week" href="">Save Graph</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+</div>
+
+<div class="row">
+    <ul class="thumbnails">
+        <li class="span8">
+          <div class="thumbnail">
+            <div id="bw_month" class="graph">
+            <img src="img/no-data-available.png" alt="">
+            </div>
+            <div class="caption">
+              <h5>1 Month graph</h5>
+              <a id="save_bw_month" href="">Save Graph</a>
+            </div>
+          </div>
+          </li>
+        </ul>
+</div><div class="row">
+
+        <ul class="thumbnails">
+        <li class="span8">
+          <div class="thumbnail">
+
+            <div id="bw_months" class="graph">
+            <img src="img/no-data-available.png" alt="">
+            </div>
+            <div class="caption">
+              <h5>3 Months graph</h5>
+              <a id="save_bw_months" href="">Save Graph</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+</div>
+
+<div class="row">
+    <ul class="thumbnails">
+        <li class="span8">
+          <div class="thumbnail">
+            <div id="bw_year" class="graph">
+            <img src="img/no-data-available.png" alt="">
+            </div>
+            <div class="caption">
+              <h5>1 Year graph</h5>
+              <a id="save_bw_year" href="">Save Graph</a>
+            </div>
+          </div>
+          </li>
+
+        </ul>
+</div><div class="row">
+        <ul class="thumbnails">
+        <li class="span8">
+          <div class="thumbnail">
+            <div id="bw_years" class="graph">
+            <img src="img/no-data-available.png" alt="">
+            </div>
+
+           <div class="caption">
+              <h5>5 Years graph</h5>
+              <a id="save_bw_years" href="">Save Graph</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+</div>
+
+<!--
+<div class="row">
+<h2>Misc <small>unsorted other information</small></h2>
+<hr/>
+</div>
+-->
