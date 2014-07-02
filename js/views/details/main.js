@@ -195,25 +195,27 @@ define([
                 }
             });
 
-            this.graph.lookup_weights(this.model.fingerprint, {
-                success: function() {
-                    graph.parse_weights_data(graph.data);
-                    graphs = ['weights_week', 'weights_month',
-                            'weights_months', 'weights_year', 'weights_years'];
-                    _.each(graphs, function(g) {
-                        var data = [graph.get(g).advbw, graph.get(g).cw,
-                                    graph.get(g).guard, graph.get(g).exit];
-                        var labels = ["advertised bandwidth fraction",
-                                      "consensus weight fraction",
-                                      "guard probability",
-                                      "exit probability"];
-                        var legendPos = [[3, 0], [181, 0], [341, 0], [450, 0]];
-                        var colors = ["#edc240", "#afd8f8",
-                                      "#cb4b4b", "#4da74d"];
-                        plot(g, data, labels, legendPos, colors, ".4%", ".6%");
-                    });
-                }
-            });
+            if (!this.model.get('is_bridge')) {
+                this.graph.lookup_weights(this.model.fingerprint, {
+                    success: function() {
+                        graph.parse_weights_data(graph.data);
+                        graphs = ['weights_week', 'weights_month',
+                                'weights_months', 'weights_year', 'weights_years'];
+                        _.each(graphs, function(g) {
+                            var data = [graph.get(g).advbw, graph.get(g).cw,
+                                        graph.get(g).guard, graph.get(g).exit];
+                            var labels = ["advertised bandwidth fraction",
+                                          "consensus weight fraction",
+                                          "guard probability",
+                                          "exit probability"];
+                            var legendPos = [[3, 0], [181, 0], [341, 0], [450, 0]];
+                            var colors = ["#edc240", "#afd8f8",
+                                          "#cb4b4b", "#4da74d"];
+                            plot(g, data, labels, legendPos, colors, ".4%", ".6%");
+                        });
+                    }
+                });
+            };
 
             $("#loading").hide();
             $(".flag .tooltip").hide();

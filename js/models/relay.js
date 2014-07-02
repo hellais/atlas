@@ -132,8 +132,15 @@ define([
             var model = this;
             console.log("doing query..");
             $.getJSON(this.baseurl+'/details?lookup='+this.fingerprint, function(data) {
+                var relay = null;
                 if (data.relays.length >= 1) {
-                    var relay = data.relays[0];
+                    relay = data.relays[0];
+                    relay.is_bridge = false;
+                } else if (data.bridges.length >= 1) {
+                    relay = data.bridges[0];
+                    relay.is_bridge = true;
+                }
+                if (relay) {
                     //console.log(data);
                     relay.contact = relay.contact ? relay.contact : 'undefined';
                     relay.platform = relay.platform ? relay.platform : null;
@@ -148,6 +155,15 @@ define([
                     relay.bandwidth = relay.advertised_bandwidth ? relay.advertised_bandwidth : null;
                     relay.bandwidth_hr = relay.advertised_bandwidth ? hrBandwidth(relay.advertised_bandwidth) : null;
                     relay.family = relay.family ? relay.family : null;
+                    if (relay.is_bridge) {
+                        var new_addresses = [];
+                        _.each(relay.or_addresses, function(or_addr) {
+                            var addr = or_addr[0] == '[' ? "IPv6" : "IPv4";
+                            addr += or_addr.slice(or_addr.lastIndexOf(":"));
+                            new_addresses.push(addr);
+                        });
+                        relay.or_addresses = new_addresses;
+                    }
                     relay.or_address = relay.or_addresses ? relay.or_addresses[0].split(":")[0] : null;
                     relay.or_port = relay.or_addresses ? relay.or_addresses[0].split(":")[1] : 0;
                     relay.dir_port = relay.dir_address ? relay.dir_address.split(":")[1] : 0;
@@ -163,6 +179,8 @@ define([
                     relay.downtime = relay.last_seen ? model.parsedate(relay.last_seen).hrfull : null;
                     relay.as_no = relay.as_number ? relay.as_number : null;
                     relay.as_name = relay.as_name ? relay.as_name : null;
+                    relay.pool_assignment = relay.pool_assignment ? relay.pool_assignment : null;
+                    relay.fingerprint = relay.hashed_fingerprint ? relay.hashed_fingerprint : relay.fingerprint;
                     model.set({badexit: false});
                     var size = ['16x16', '14x16', '8x16'];
                     relay.flags = model.parseflags(relay.flags, size);

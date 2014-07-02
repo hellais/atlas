@@ -26,6 +26,11 @@ define([
                     crelay.fingerprint = relay.f;
                     relays.push(crelay);
                 });
+                _.each(response.bridges, function(relay, resultsC) {
+                    crelay = new relayModel;
+                    crelay.fingerprint = relay.h;
+                    relays.push(crelay);
+                });
                 if (relays.length == 0) {
                     error(0);
                     console.log('error');
@@ -37,7 +42,7 @@ define([
                 _.each(relays, function(relay) {
                     relay.lookup({
                         success: function(){
-                            if (relays.length == response.relays.length) {
+                            if (relays.length == response.relays.length + response.bridges.length) {
                                 collection[options.add ? 'add' : 'reset'](relays, options);
                                 success(collection, relays);
                                 return relays;

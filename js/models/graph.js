@@ -98,6 +98,8 @@ define([
         parse_bw_data: function(data) {
             var model = this;
             var relay = data.relays[0];
+            if (!relay)
+                relay = data.bridges[0];
             this.fingerprint = relay.fingerprint;
             // Parse the read and write history of the relay
             var write_history = parseHistory(relay.write_history, model, relay, 'write');
@@ -125,6 +127,8 @@ define([
         parse_weights_data: function(data) {
             var model = this;
             var relay = data.relays[0];
+            if (!relay)
+                relay = data.bridges[0];
             this.fingerprint = relay.fingerprint;
 
             if ("advertised_bandwidth_fraction" in relay) {
