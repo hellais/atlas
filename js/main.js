@@ -15,6 +15,7 @@ require.config({
     popover: 'libs/bootstrap/bootstrap-popover',
     collapse: 'libs/bootstrap/bootstrap-collapse',
     d3js: 'libs/d3js/d3.v3.min',
+    jssha: 'libs/jssha/sha1',
     templates: '../templates'
   }
 
