@@ -6,8 +6,9 @@ define([
   'views/details/main',
   'views/search/main',
   'views/search/do',
-  'views/about/main'
-], function($, _, Backbone, mainDetailsView, mainSearchView, doSearchView, aboutView){
+  'views/about/main',
+  'jssha'
+], function($, _, Backbone, mainDetailsView, mainSearchView, doSearchView, aboutView, jsSHA){
   var AppRouter = Backbone.Router.extend({
     routes: {
        // Define the routes for the actions in Atlas
@@ -17,6 +18,14 @@ define([
     	// Default
     	'*actions': 'defaultAction'
     },
+
+    hashFingerprints: function(fp){
+        if (fp.match(/^[a-f0-9]{40}/i) != null)
+            return new jsSHA(fp, "HEX").getHash("SHA-1", "HEX").toUpperCase();
+        else
+            return fp
+    },
+
     // Show the details page of a node
     mainDetails: function(fingerprint){
 
@@ -26,7 +35,7 @@ define([
         $("#loading").show();
         $("#content").hide();
 
-        mainDetailsView.model.fingerprint = fingerprint;
+        mainDetailsView.model.fingerprint = this.hashFingerprints(fingerprint);
         mainDetailsView.model.lookup({
             success: function(relay) {
                 $("#content").show();
@@ -54,7 +63,8 @@ define([
         if (query == "") {
             doSearchView.error(0);
         } else {
-            doSearchView.collection.url = doSearchView.collection.baseurl + query;
+            doSearchView.collection.url =
+                doSearchView.collection.baseurl + this.hashFingerprints(query);
             doSearchView.collection.lookup({
                 success: function(relays){
                     $("#content").show();
