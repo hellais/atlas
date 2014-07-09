@@ -224,7 +224,22 @@ define([
                         });
                     }
                 });
-            };
+            } else {
+                this.graph.lookup_clients(this.model.fingerprint, {
+                    success: function() {
+                        graph.parse_clients_data(graph.data);
+                        graphs = ['clients_week', 'clients_month',
+                                'clients_months', 'clients_year', 'clients_years'];
+                        _.each(graphs, function(g) {
+                            var data = [graph.get(g).average];
+                            var labels = ["average number of connected clients"];
+                            var legendPos = [[3, 0]];
+                            var colors = ["#edc240"];
+                            plot(g, data, labels, legendPos, colors, "g", ".2g");
+                        });
+                    }
+                });
+            }
 
             $("#loading").hide();
             $(".flag .tooltip").hide();
