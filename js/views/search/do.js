@@ -169,6 +169,9 @@ define([
                             'Running', 'Stable', 'V2Dir', 'Valid', 'Unnamed',
                             'Exit']
             });
+            $('input#type').typeahead({
+                    source: ['Relay', 'Bridge']
+            });
             $(".search-query").val(query);
 
             $("#torstatus_results tbody tr").hover(function() {
@@ -217,6 +220,9 @@ define([
                 oTable.fnDraw();
            });
 
+           $("tfoot input#type").keyup(function() {
+                oTable.fnFilter(this.value, 8);
+           });
 
 
         },

@@ -37,6 +37,7 @@ Please report which browser/addons/etc. you're using to <a href="https://trac.to
 			<th>Flags</th>
 			<th>ORPort</th>
 			<th>DirPort</th>
+			<th>Type</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -72,6 +73,13 @@ Please report which browser/addons/etc. you're using to <a href="https://trac.to
             </td>
 			<td><%= relay.get('or_port') %></td>
 			<td><%= relay.get('dir_port') %></td>
+			<td>
+				<% if (relay.get('is_bridge')) { %>
+				Bridge
+				<% } else { %>
+				Relay
+				<% } %>
+			</td>
             </tr>
 	<% i += 1; %>
 <% }); %>
@@ -104,6 +112,9 @@ Please report which browser/addons/etc. you're using to <a href="https://trac.to
         </th>
 		<th>
             <input type="text" id="dir_port" name="dir_port" placeholder="DirPort" class="search_init span1">
+        </th>
+		<th>
+            <input type="text" id="type" name="type" placeholder="Type" class="search_init span1">
         </th>
 	</tr>
 	</tfoot>
