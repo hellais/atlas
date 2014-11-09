@@ -40,7 +40,7 @@
     <% } %>
 
     <dt><span class="tip" data-content="Hash of 20-byte unique identifier of the bridge." data-original-title="Hashed Fingerprint">Hashed Fingerprint</span></dt>
-    <dd><%= relay.get('fingerprint') %></dd>
+    <dd><tt><%= relay.get('fingerprint') %></tt></dd>
 
     <dt><span class="tip" data-content="Flags that the directory authorities assigned to this bridge." data-original-title="Bridge flags">Flags</span></dt>
     <dd><% _.each(relay.get('flags'), function(flag) { %>
