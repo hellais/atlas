@@ -99,11 +99,11 @@ define([
             clients_months: {average: []},
             clients_year: {average: []},
             clients_years: {average: []},
-            weights_week: {advbw: [], cw: [], guard: [], exit: []},
-            weights_month: {advbw: [], cw: [], guard: [], exit: []},
-            weights_months: {advbw: [], cw: [], guard: [], exit: []},
-            weights_year: {advbw: [], cw: [], guard: [], exit: []},
-            weights_years: {advbw: [], cw: [], guard: [], exit: []}
+            weights_week: {cw: [], guard: [], middle: [], exit: []},
+            weights_month: {cw: [], guard: [], middle: [], exit: []},
+            weights_months: {cw: [], guard: [], middle: [], exit: []},
+            weights_year: {cw: [], guard: [], middle: [], exit: []},
+            weights_years: {cw: [], guard: [], middle: [], exit: []}
             });
         },
         lookup_bw: function(fingerprint, options) {
@@ -141,11 +141,11 @@ define([
             var success = options.success;
             // Clear the model
             this.set({
-                weights_week: {advbw: [], cw: [], guard: [], exit: []},
-                weights_month: {advbw: [], cw: [], guard: [], exit: []},
-                weights_months: {advbw: [], cw: [], guard: [], exit: []},
-                weights_year: {advbw: [], cw: [], guard: [], exit: []},
-                weights_years: {advbw: [], cw: [], guard: [], exit: []}
+                weights_week: {cw: [], guard: [], middle: [], exit: []},
+                weights_month: {cw: [], guard: [], middle: [], exit: []},
+                weights_months: {cw: [], guard: [], middle: [], exit: []},
+                weights_year: {cw: [], guard: [], middle: [], exit: []},
+                weights_years: {cw: [], guard: [], middle: [], exit: []}
             });
 
             $.getJSON(this.baseurl+'/weights?lookup='+fingerprint, function(data) {
@@ -160,11 +160,6 @@ define([
                 relay = data.bridges[0];
             this.fingerprint = relay.fingerprint;
 
-            if ("advertised_bandwidth_fraction" in relay) {
-                var advbw = parseWeightHistory(relay.advertised_bandwidth_fraction, model, 'advbw');
-                model.set({mperiod: {advbw: advbw}});
-            }
-
             if ("consensus_weight_fraction" in relay) {
                 var cw = parseWeightHistory(relay.consensus_weight_fraction, model, 'cw');
                 model.set({mperiod: {cw: cw}});
@@ -173,6 +168,11 @@ define([
             if ("guard_probability" in relay) {
                 var guard = parseWeightHistory(relay.guard_probability, model, 'guard');
                 model.set({mperiod: {guard: guard}});
+            }
+
+            if ("middle_probability" in relay) {
+                var middle = parseWeightHistory(relay.middle_probability, model, 'middle');
+                model.set({mperiod: {middle: middle}});
             }
 
             if ("exit_probability" in relay) {
