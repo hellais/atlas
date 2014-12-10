@@ -179,7 +179,7 @@ define([
                     relay.downtime = relay.last_seen ? model.parsedate(relay.last_seen).hrfull : null;
                     relay.as_no = relay.as_number ? relay.as_number : null;
                     relay.as_name = relay.as_name ? relay.as_name : null;
-                    relay.pool_assignment = relay.pool_assignment ? relay.pool_assignment : null;
+                    relay.transports = relay.transports ? relay.transports : null;
                     relay.fingerprint = relay.hashed_fingerprint ? relay.hashed_fingerprint : relay.fingerprint;
                     model.set({badexit: false});
                     var size = ['16x16', '14x16', '8x16'];

@@ -55,8 +55,8 @@
     <dt><span class="tip" data-content="What OS and Tor version the bridge is using" data-original-title="Platform">Platform</span></dt>
     <dd><%= _.escape(relay.get('platform')) %></dd>
 
-    <dt><span class="tip" data-content="BridgeDB information assigned to the bridge." data-original-title="Pool Assignment">Pool Assignment</span></dt>
-    <dd><%= relay.get('pool_assignment') %></dd>
+    <dt><span class="tip" data-content="Transport protocols supported by this bridge." data-original-title="Transport protocols">Transport protocols</span></dt>
+    <dd><%= relay.get('transports') %></dd>
 
     </dl>
     </div>
