@@ -14,11 +14,13 @@
     </div>
     <% } else if (error == 2) {%>
     <div class="alert alert-error">
-        <strong>Backend error!</strong><p>The backend server replied with an error
-to your query. This probably means that you did not properly format your query.
-If your query was properly formatted it may mean that there is an issue with your browser/add-ons.
-Please report which browser/addons/etc. you're using to <a href="https://trac.torproject.org/projects/tor/newticket?component=Atlas">the bug tracker.</a>
-    </p>
+        <strong>Backend error!</strong>
+        <p>Atlas is unable to get a response from its backend server. This
+        probably means that the backend server is unavailable right now. This
+        can also happen, however, if you did not format your query correctly.
+        Please have a look at <a href="https://atlas.torproject.org/#about">this
+        page</a> that explains what type of search queries are supported by
+        Atlas.</p>
     </div>
     <% } else if (error == 3) {%>
     <div class="alert alert-error">
