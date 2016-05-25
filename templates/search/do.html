@@ -5,13 +5,6 @@
         <strong>No Results found!</strong><p>
     No Tor relays matched your query :(</p>
     </div>
-    <% } else if (error == 1) {%>
-    <div class="alert alert-error">
-        <strong>Too many matches!</strong><p>The current version of Atlas does
-    not support a result set greater than 40. This is due to some performance
-    issues in doing multiple parallel connections in javascript. Future versions
-    will hopefully manage to overcome this issue.</p>
-    </div>
     <% } else if (error == 2) {%>
     <div class="alert alert-error">
         <strong>Backend error!</strong>
@@ -28,6 +21,15 @@
     </div>
     <% } %>
 <% } else { %>
+    <% if (relays.length >= 40) {%>
+    <div class="alert alert-warning">
+        <strong>Possibly too many matches!</strong><p>The current version of
+        Atlas does not support a result set greater than 40 and only displays
+        the first 40 hits. This is due to some performance issues in doing
+        multiple parallel connections in javascript. Future versions will
+        hopefully manage to overcome this issue.</p>
+    </div>
+    <% } %>
 <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered table-striped" id="torstatus_results">
 	<thead>
 		<tr>
@@ -46,6 +48,7 @@
 <% var i = 0; %>
 
 <% _.each(relays, function(relay) { %>
+		<% if (i > 40) return true; %>
 		<% if (i % 2 == 0 ) { %>
 			<tr class="even">
 		<% } else { %>

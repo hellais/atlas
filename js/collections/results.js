@@ -36,17 +36,15 @@ define([
                     console.log('error');
                     return false;
                 } else if (relays.length > 40) {
-                    error(1);
-                    return false;
+                    /* Truncate result set beyond 40 hits. */
+                    relays = relays.slice(0, 40);
                 }
                 _.each(relays, function(relay) {
                     relay.lookup({
                         success: function(){
-                            if (relays.length == response.relays.length + response.bridges.length) {
-                                collection[options.add ? 'add' : 'reset'](relays, options);
-                                success(collection, relays);
-                                return relays;
-                            }
+                            collection[options.add ? 'add' : 'reset'](relays, options);
+                            success(collection, relays);
+                            return relays;
                         },
                         error: function() {
                             console.log("error in loading..");
