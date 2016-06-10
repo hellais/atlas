@@ -148,7 +148,7 @@ define([
             document.title = "Atlas";
             this.filtering();
             var asInitVals = new Array();
-        	var compiledTemplate = _.template(doSearchTemplate, {relays: this.relays, countries: CountryCodes});
+		var compiledTemplate = _.template(doSearchTemplate, {relays: this.relays, countries: CountryCodes, error: this.error});
 			this.el.html(compiledTemplate);
 	    	$("#loading").hide();
 			var fp = this;
@@ -227,8 +227,8 @@ define([
 
         },
 
-	    error: function(err){
-	    	var compiledTemplate = _.template(doSearchTemplate, {relays: null, error: err});
+	    renderError: function(){
+		var compiledTemplate = _.template(doSearchTemplate, {relays: null, error: this.error, countries: null});
 	    	$("#loading").hide();
 	    	this.el.html(compiledTemplate);
 	    }

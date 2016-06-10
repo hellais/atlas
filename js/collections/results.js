@@ -12,6 +12,7 @@ define([
 		lookup: function(options) {
             var success = options.success;
             var error = options.error;
+            var err = 0;
             var collection = this;
             options.success = $.getJSON(this.url, function(response) {
                 this.fresh_until = response.fresh_until;
@@ -38,12 +39,14 @@ define([
                 } else if (relays.length > 40) {
                     /* Truncate result set beyond 40 hits. */
                     relays = relays.slice(0, 40);
+                    err = 4;
+                    console.log(options);
                 }
                 _.each(relays, function(relay) {
                     relay.lookup({
                         success: function(){
                             collection[options.add ? 'add' : 'reset'](relays, options);
-                            success(collection, relays);
+                            success(err);
                             return relays;
                         },
                         error: function() {

@@ -21,9 +21,9 @@
     </div>
     <% } %>
 <% } else { %>
-    <% if (relays.length >= 40) {%>
+    <% if (error == 4) {%>
     <div class="alert alert-warning">
-        <strong>Possibly too many matches!</strong><p>The current version of
+        <strong>Too many matches!</strong><p>The current version of
         Atlas does not support a result set greater than 40 and only displays
         the first 40 hits. This is due to some performance issues in doing
         multiple parallel connections in javascript. Future versions will
@@ -48,7 +48,6 @@
 <% var i = 0; %>
 
 <% _.each(relays, function(relay) { %>
-		<% if (i > 40) return true; %>
 		<% if (i % 2 == 0 ) { %>
 			<tr class="even">
 		<% } else { %>

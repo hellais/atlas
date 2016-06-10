@@ -66,16 +66,18 @@ define([
             doSearchView.collection.url =
                 doSearchView.collection.baseurl + this.hashFingerprints(query);
             doSearchView.collection.lookup({
-                success: function(relays){
+                success: function(err){
                     $("#content").show();
                     doSearchView.relays = doSearchView.collection.models;
+                    doSearchView.error = err;
                     doSearchView.render(query);
                     $("#loading").hide();
                 },
 
-                error: function(erno){
+                error: function(err){
                     $("#content").show();
-                    doSearchView.error(erno);
+                    doSearchView.error = err;
+                    doSearchView.renderError();
                     $("#loading").hide();
                 }
             });
