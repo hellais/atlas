@@ -35,21 +35,23 @@ define([
                     error(0);
                     console.log('error');
                     return false;
-                } else if (relays.length > 40) {
-                    error(1);
-                    return false;
                 }
+                var lookedUpRelays = 0;
                 _.each(relays, function(relay) {
+                    var lookedUp = function() {
+                      lookedUpRelays++;
+                      if (lookedUpRelays == relays.length) {
+                        success(collection, relays);
+                      }
+                    }
                     relay.lookup({
                         success: function(){
-                            if (relays.length == response.relays.length + response.bridges.length) {
-                                collection[options.add ? 'add' : 'reset'](relays, options);
-                                success(collection, relays);
-                                return relays;
-                            }
+                            collection[options.add ? 'add' : 'reset'](relays, options);
+                            lookedUp();
                         },
                         error: function() {
-                            console.log("error in loading..");
+                            console.log("error in loading one relay..");
+                            lookedUp();
                             error(0);
                         }
                     });
